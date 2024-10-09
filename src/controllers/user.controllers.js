@@ -39,6 +39,7 @@ const updateUserSchema = z.object({
     .min(1, { message: "Teléfono es requerido" })
     .regex(/^\d+$/, { message: "Teléfono debe ser numérico" }),
   address: z.string().optional(),
+  role: z.enum(['user', 'admin']).optional(),
 });
 
 // Actualizar perfil del usuario autenticado
@@ -171,6 +172,7 @@ export const updateUser = async (req, res) => {
     if (validatedData.last_name) user.last_name = validatedData.last_name;
     if (validatedData.phone) user.phone = validatedData.phone;
     if (validatedData.address) user.address = validatedData.address;
+    if (validatedData.role) user.role = validatedData.role;
 
     await user.save();
 
@@ -193,7 +195,14 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
+    const firstAdmin = await User.findOne({ where: { role: 'admin' }, order: [['createdAt', 'ASC']] });
 
+    // Verificar si el usuario que se intenta eliminar es el primer administrador
+    if (user.id === firstAdmin.id) {
+      return res.status(403).json({ message: 'No puedes eliminar al primer usuario administrador.' });
+    }
+
+    // Si no es el primer admin, procede a eliminar
     await user.destroy();
     res.status(204).json({ message: 'Usuario eliminado con éxito' });
   } catch (error) {
