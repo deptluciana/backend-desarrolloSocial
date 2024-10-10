@@ -19,7 +19,7 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-const whitelist = ['http://127.0.0.1:5501', 'https://mi-dominio.com'];
+const whitelist = ['http://127.0.0.1:5501', 'https://desarrollo-social.vercel.app'];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
