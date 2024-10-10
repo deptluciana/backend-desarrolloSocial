@@ -4,16 +4,16 @@ config();
 
 const requiredEnv = [
   'DB_HOST',
-  'DB_PORT',
   'DB_NAME',
+  'DB_PASSWORD',
+  'DB_PORT',
   'DB_USER',
-  'PORT',
-  'MYSQL_PUBLIC_URL',
-  'DB_PASSWORD', 
-  'TOKEN_SECRET', 
-  'FRONTEND_URL',
   'EMAIL_USER',
-  'EMAIL_PASS' 
+  'EMAIL_PASS', 
+  'FRONTEND_URL', 
+  'NODE_ENV',
+  'PORT',
+  'TOKEN_SECRET' 
 ]; 
 
 requiredEnv.forEach((envVar) => {
