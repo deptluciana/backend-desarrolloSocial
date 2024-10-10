@@ -7,13 +7,14 @@ const requiredEnv = [
   'DB_PORT',
   'DB_NAME',
   'DB_USER',
+  'PORT',
   'MYSQL_PUBLIC_URL',
   'DB_PASSWORD', 
   'TOKEN_SECRET', 
   'FRONTEND_URL',
   'EMAIL_USER',
   'EMAIL_PASS' 
-];
+]; 
 
 requiredEnv.forEach((envVar) => {
   if (!process.env[envVar]) {
