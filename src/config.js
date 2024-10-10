@@ -7,11 +7,12 @@ const requiredEnv = [
   'DB_PORT',
   'DB_NAME',
   'DB_USER',
-  'DB_PASSWORD',
-  'TOKEN_SECRET',
+  'MYSQL_PUBLIC_URL',
+  'DB_PASSWORD', 
+  'TOKEN_SECRET', 
   'FRONTEND_URL',
-  'EMAIL_USER', 
-  'EMAIL_PASS'
+  'EMAIL_USER',
+  'EMAIL_PASS' 
 ];
 
 requiredEnv.forEach((envVar) => {
@@ -25,6 +26,7 @@ export const PORT = process.env.PORT || 5000;
 export const DB_HOST = process.env.DB_HOST;
 export const DB_PORT = process.env.DB_PORT || 3306; // Asegura un puerto por defecto
 export const DB_USER = process.env.DB_USER;
+export const MYSQL_PUBLIC_URL = process.env.MYSQL_PUBLIC_URL;
 export const DB_PASSWORD = process.env.DB_PASSWORD;
 export const DB_NAME = process.env.DB_NAME;
 export const TOKEN_SECRET = process.env.TOKEN_SECRET;
