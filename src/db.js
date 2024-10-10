@@ -1,4 +1,3 @@
-// db.js
 import { Sequelize } from 'sequelize';
 import { MYSQL_PUBLIC_URL } from './config.js';
 

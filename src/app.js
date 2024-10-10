@@ -19,7 +19,8 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-const whitelist = ['http://127.0.0.1:5501', 'https://desarrollo-social.vercel.app'];
+const whitelist = ['http://127.0.0.1:5501', 'https://desarrollo-social.vercel.app', 'https://backend-desarrollosocial-production-4486.up.railway.app'];
+
 
 const corsOptions = {
   origin: function (origin, callback) {
