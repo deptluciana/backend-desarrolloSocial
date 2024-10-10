@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { User } from '../models/user.model.js';
 import { PasswordResetToken } from '../models/passwordResetToken.model.js'
 import nodemailer from 'nodemailer'; // Requiere configuración
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // Configurar nodemailer (usar tu propio servicio de email)
 const transporter = nodemailer.createTransport({
