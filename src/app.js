@@ -52,6 +52,13 @@ app.use('/api/info', infoRoutes );
 app.use('/api/eventos', eventoRoutes);
 app.use('/api/capacitacion', capacitacionRoutes);
 
+// Middleware para manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Error interno del servidor' });
+});
+
+
 app.get('/', (req, res) => {
   res.send('¡Servidor funcionando!');
 });
