@@ -11,12 +11,15 @@ router.post('/login', validateSchema(loginSchema), login);
 router.post('/logout', logout);
 
 router.get('/check', authMiddleware(), (req, res) => {
+    console.log('Verificando autenticación...');
     if (req.user) {
-        return res.status(200).json({ authenticated: true, user: req.user });
+      console.log('Usuario autenticado:', req.user);
+      return res.status(200).json({ authenticated: true, user: req.user });
     } else {
-        return res.status(401).json({ authenticated: false });
+      console.log('No se encontró un usuario autenticado.');
+      return res.status(401).json({ authenticated: false });
     }
-});
+  });
 
 
 
