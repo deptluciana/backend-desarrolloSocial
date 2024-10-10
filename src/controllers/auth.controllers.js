@@ -36,7 +36,7 @@ export const register = async (req, res) => {
     // Enviar el token en una cookie
     res.cookie("token-jwt", token, {
       httpOnly: true,
-      secure: true, // solo en producción
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "none",
     });
 
@@ -90,7 +90,7 @@ export const login = async (req, res) => {
     // Enviar el token en una cookie
     res.cookie("token-jwt", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "none", // Cambiar según las necesidades de seguridad
     });
 
