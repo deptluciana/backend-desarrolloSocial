@@ -30,7 +30,7 @@ const corsOptions = {
       callback(new Error('No permitido por CORS'));
     }
   },
-  credentials: true,
+  credentials: true, // Habilita el envío de credenciales (cookies)
 };
 
 

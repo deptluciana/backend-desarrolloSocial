@@ -36,8 +36,8 @@ export const register = async (req, res) => {
     // Enviar el token en una cookie
     res.cookie("token-jwt", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // solo en producción
-      sameSite: "lax",
+      secure: true, // solo en producción
+      sameSite: "none",
     });
 
 
