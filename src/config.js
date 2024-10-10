@@ -19,7 +19,7 @@ const requiredEnv = [
 requiredEnv.forEach((envVar) => {
   if (!process.env[envVar]) {
     console.error(`Falta la variable de entorno: ${envVar}`);
-    process.exit(1);
+    process.exit(1); 
   }
 });
 
