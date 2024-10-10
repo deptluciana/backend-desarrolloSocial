@@ -53,6 +53,7 @@ export const register = async (req, res) => {
       role: newUser.role, // Incluir el rol en la respuesta
     });
   } catch (error) {
+    console.error("Error en el registro:", error);
     res.status(500).json({
       message: process.env.NODE_ENV === "development" ? error.message : "Error interno del servidor"
     });
