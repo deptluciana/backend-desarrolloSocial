@@ -19,7 +19,7 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-const whitelist = ['http://127.0.0.1:5501', 'www.secretariaarticulacionterritorial.com', 'https://backend-desarrollosocial-production-4486.up.railway.app'];
+const whitelist = ['http://127.0.0.1:5501', 'https://www.secretariaarticulacionterritorial.com/', 'https://backend-desarrollosocial-production-4486.up.railway.app'];
 
 
 const corsOptions = {
