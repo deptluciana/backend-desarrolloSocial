@@ -92,7 +92,8 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      path: "/",
+      domain: ".secretariaarticulacionterritorial.com", // Compartir cookies entre subdominios
+      path: "/", // Asegúrate de que la ruta esté correctamente definida
     });
 
 
