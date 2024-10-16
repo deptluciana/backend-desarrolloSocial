@@ -20,7 +20,9 @@ const __dirname = dirname(__filename);
 const app = express();
 
 const whitelist = [
+  'http://0.0.0.0:3306',
   'http://127.0.0.1:4486',
+  'https://desarrollo-social.vercel.app',
   'https://www.secretariaarticulacionterritorial.com',
   'https://secretariaarticulacionterritorial.com' 
 ];

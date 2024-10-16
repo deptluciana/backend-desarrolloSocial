@@ -21,9 +21,9 @@ requiredEnv.forEach((envVar) => {
     console.error(`Falta la variable de entorno: ${envVar}`);
     process.exit(1); 
   }
-});
+}); 
 
-export const PORT = process.env.PORT || 5000; 
+export const PORT = process.env.PORT || 3306; 
 export const DB_HOST = process.env.DB_HOST;
 export const DB_PORT = process.env.DB_PORT || 3306; // Asegura un puerto por defecto
 export const DB_USER = process.env.DB_USER;
