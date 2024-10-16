@@ -43,6 +43,11 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(helmet());
 
+app.use((req, res, next) => {
+  console.log(`Origen de la solicitud: ${req.headers.origin}`);
+  next();
+});
+
 // Servir la carpeta 'uploads' como estática para acceder a los archivos subidos
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
