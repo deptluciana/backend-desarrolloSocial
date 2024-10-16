@@ -91,7 +91,7 @@ export const login = async (req, res) => {
      res.cookie("token-jwt", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: "lax",
       path: "/", // Asegura que la cookie esté disponible en todas las rutas
     });
 
