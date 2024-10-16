@@ -7,7 +7,7 @@ import userRoutes from './routes/user.routes.js'
 import passwordRoutes from './routes/password.routes.js'
 import fileRoutes from './routes/file.routes.js'
 import path from 'path';
-import { FRONTEND_URL } from './config.js';
+import { FRONTEND_URL, FRONTEND_URL_WWW} from './config.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import infoRoutes from './routes/info.routes.js'
@@ -20,17 +20,30 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
+const allowedOrigins = [
+  FRONTEND_URL,
+  FRONTEND_URL_WWW
+];
+
+// Configuración de CORS
+const corsOptions = {
+  origin: function(origin, callback){
+    // Permitir solicitudes sin origen (como desde herramientas de prueba)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)){
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  methods: ["POST", "PUT", "DELETE", "GET", "OPTIONS"],
+  credentials: true, // Permitir el envío de cookies
+};
 
 // Middleware para parsear JSON
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: FRONTEND_URL,
-    methods: ["POST", "PUT", "DELETE", "GET", "OPTIONS"],
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 app.use(helmet());
 
 app.use((req, res, next) => {

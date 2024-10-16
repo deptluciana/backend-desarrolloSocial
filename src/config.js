@@ -11,6 +11,7 @@ const requiredEnv = [
   'EMAIL_USER',
   'EMAIL_PASS', 
   'FRONTEND_URL', 
+  'FRONTEND_URL_WWW',
   'NODE_ENV',
   'PORT',
   'TOKEN_SECRET' 
@@ -32,6 +33,7 @@ export const DB_PASSWORD = process.env.DB_PASSWORD;
 export const DB_NAME = process.env.DB_NAME;
 export const TOKEN_SECRET = process.env.TOKEN_SECRET;
 export const FRONTEND_URL = process.env.FRONTEND_URL;
+export const FRONTEND_URL_WWW = process.env.FRONTEND_URL_WWW;
 export const EMAIL_USER = process.env.EMAIL_USER;
 export const EMAIL_PASS = process.env.EMAIL_PASS;
 export const NODE_ENV = process.env.NODE_ENV || 'development';
