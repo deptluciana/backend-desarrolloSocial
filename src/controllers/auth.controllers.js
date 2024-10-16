@@ -91,7 +91,7 @@ export const login = async (req, res) => {
     res.cookie("token-jwt", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "none", // Cambiar según las necesidades de seguridad
+      sameSite: "none"
     });
 
     // Enviar la respuesta con los datos del usuario
