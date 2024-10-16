@@ -88,14 +88,14 @@ export const login = async (req, res) => {
     });
 
     // Enviar el token en una cookie
-     res.cookie("token-jwt", token, {
+    res.cookie("token-jwt", token, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      path: "/", 
-    
+      path: "/",
+      domain: '.secretariaarticulacionterritorial.com'
     });
-    
+
 
     // Enviar la respuesta con los datos del usuario
     res.json({
