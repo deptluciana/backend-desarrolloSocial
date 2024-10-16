@@ -93,7 +93,6 @@ export const login = async (req, res) => {
       secure: true,
       sameSite: "none",
       path: "/",
-      domain: '.secretariaarticulacionterritorial.com'
     });
 
 

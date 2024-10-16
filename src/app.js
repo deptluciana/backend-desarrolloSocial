@@ -21,7 +21,8 @@ const app = express();
 
 const whitelist = [
   'https://www.secretariaarticulacionterritorial.com',
-  'https://secretariaarticulacionterritorial.com' 
+  'https://secretariaarticulacionterritorial.com',
+  'https://backend-desarrollosocial-production-4486.up.railway.app.'
 ];
 
 const corsOptions = {
