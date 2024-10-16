@@ -7,6 +7,7 @@ import userRoutes from './routes/user.routes.js'
 import passwordRoutes from './routes/password.routes.js'
 import fileRoutes from './routes/file.routes.js'
 import path from 'path';
+import { FRONTEND_URL } from './config.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import infoRoutes from './routes/info.routes.js'
@@ -19,28 +20,17 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-const whitelist = [
-  'https://www.secretariaarticulacionterritorial.com',
-  'https://secretariaarticulacionterritorial.com',
-  'https://backend-desarrollosocial-production-4486.up.railway.app.'
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('No permitido por CORS'));
-    }
-  },
-  credentials: true, // Permitir el envío de credenciales (cookies)
-};
-
 
 // Middleware para parsear JSON
 app.use(express.json());
-app.use(cookieParser()); 
-app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    methods: ["POST", "PUT", "DELETE", "GET", "OPTIONS"],
+    credentials: true,
+  })
+);
 app.use(helmet());
 
 app.use((req, res, next) => {
@@ -56,7 +46,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/auth', passwordRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/files', fileRoutes);
-app.use('/api/info', infoRoutes );
+app.use('/api/info', infoRoutes);
 app.use('/api/eventos', eventoRoutes);
 app.use('/api/capacitacion', capacitacionRoutes);
 
