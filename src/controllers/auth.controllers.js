@@ -114,8 +114,10 @@ export const logout = async (req, res) => {
   // Limpiar la cookie del token
   res.clearCookie("token-jwt", {
     httpOnly: true,
-    secure: true, // Cambiar a true si estás en producción
+    secure: true, // Asegúrate de que esto esté configurado correctamente según el entorno
     sameSite: "none",
+    domain: ".secretariaarticulacionterritorial.com", // Debe coincidir con el dominio usado en login
+    path: "/", // Debe coincidir con la ruta usada en login
   });
   return res.status(200).json({ message: "Logout successful" });
 };
