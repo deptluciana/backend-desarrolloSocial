@@ -35,7 +35,7 @@ const sendPasswordReset = async (req, res) => {
         });
 
         // Enviar correo con el token
-        const resetLink = `http://127.0.0.1:5501/frontend/pages/reset-password.html?token=${token}`;
+        const resetLink = `https://www.secretariaarticulacionterritorial.com/pages/reset-password.html?token=${token}`;
         await transporter.sendMail({
             to: email,
             subject: 'Recuperación de contraseña',
