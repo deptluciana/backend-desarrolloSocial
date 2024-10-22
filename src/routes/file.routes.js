@@ -3,6 +3,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import { uploadFile, getFilesBySection, deleteFile} from '../controllers/file.controllers.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js'
+import path from 'path';
 
 const router = Router();
 
