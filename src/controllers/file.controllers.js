@@ -49,32 +49,39 @@ export const getFilesBySection = async (req, res) => {
 
 
 export const deleteFile = async (req, res) => {
-    const { id } = req.params;
-  
-    try {
+  const { id } = req.params;
+
+  try {
       const fileToDelete = await File.findByPk(id);
       if (!fileToDelete) {
-        return res.status(404).json({ message: 'Archivo no encontrado' });
+          return res.status(404).json({ message: 'Archivo no encontrado' });
       }
-  
-      // Usa fileUrl para construir la ruta completa del archivo
-      const filePath = path.join('uploads', fileToDelete.fileUrl.split('/').pop()); // Extraer el nombre del archivo
+
+      const filePath = path.join('uploads', fileToDelete.fileUrl.split('/').pop());
       console.log(`Intentando eliminar el archivo: ${filePath}`);
-  
-      // Eliminar el archivo del sistema de archivos
-      fs.unlink(filePath, async (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ message: 'Error al eliminar el archivo del sistema' });
-        }
-  
-        // Eliminar el registro del archivo de la base de datos solo si la eliminación del archivo fue exitosa
-        await File.destroy({ where: { id } });
-        return res.status(200).json({ message: 'Archivo eliminado correctamente' });
-      });
-    } catch (error) {
+
+      // Verifica si el archivo existe antes de intentar eliminarlo
+      if (fs.existsSync(filePath)) {
+          fs.unlink(filePath, async (err) => {
+              if (err) {
+                  console.error(err);
+                  return res.status(500).json({ message: 'Error al eliminar el archivo del sistema' });
+              }
+
+              // Eliminar el registro del archivo de la base de datos
+              await File.destroy({ where: { id } });
+              return res.status(200).json({ message: 'Archivo eliminado correctamente' });
+          });
+      } else {
+          console.warn(`El archivo no existe: ${filePath}`);
+          // Eliminar el registro del archivo de la base de datos aunque no esté en el sistema
+          await File.destroy({ where: { id } });
+          return res.status(200).json({ message: 'Archivo eliminado de la base de datos, pero no se encontró en el sistema' });
+      }
+  } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Error al eliminar el archivo' });
-    }
-  };
+  }
+};
+
   
