@@ -50,8 +50,7 @@ export const getFilesBySection = async (req, res) => {
 
 export const deleteFile = async (req, res) => {
     const { id } = req.params;
-    console.log(`Archivo que se intenta eliminar: ${filePath}`);
-
+  
     try {
       const fileToDelete = await File.findByPk(id);
       if (!fileToDelete) {
