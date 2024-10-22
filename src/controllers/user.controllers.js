@@ -195,16 +195,33 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
-    const firstAdmin = await User.findOne({ where: { role: 'admin' }, order: [['createdAt', 'ASC']] });
-
+    
     // Verificar si el usuario que se intenta eliminar es el primer administrador
+    const firstAdmin = await User.findOne({ where: { role: 'admin' }, order: [['createdAt', 'ASC']] });
     if (user.id === firstAdmin.id) {
       return res.status(403).json({ message: 'No puedes eliminar al primer usuario administrador.' });
     }
 
-    // Si no es el primer admin, procede a eliminar
+    // Invalida el JWT del usuario si es que está autenticado
+    const token = req.cookies.jwt;  // Obtener el token de las cookies
+    if (token) {
+      jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
+        if (err) {
+          return res.status(403).json({ message: 'Token inválido' });
+        }
+
+        // Si el token pertenece al usuario eliminado, eliminar el token
+        if (decodedToken.id === user.id) {
+          // Aquí puedes eliminar la cookie del frontend también si deseas
+          res.clearCookie('jwt'); // Elimina la cookie del token en el cliente
+        }
+      });
+    }
+
+    // Proceder a eliminar el usuario
     await user.destroy();
     res.status(204).json({ message: 'Usuario eliminado con éxito' });
+
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
   }

@@ -18,15 +18,21 @@ export const authMiddleware = (roles = []) => {
       const decoded = jwt.verify(token, TOKEN_SECRET);
       req.user = decoded;  // Guardar la información decodificada del usuario
 
-      // Si no se pasan roles, significa que cualquier usuario autenticado puede acceder
+      // Verificar si el usuario aún existe en la base de datos
+      const user = await User.findByPk(req.user.id);
+      if (!user) {
+        // Si el usuario ha sido eliminado, limpiar las cookies y retornar error
+        res.clearCookie('token-jwt', { httpOnly: true, sameSite: 'None', secure: true });
+        return res.status(401).json({ message: "Usuario no encontrado, sesión cerrada" });
+      }
+
+      // Si no se pasan roles, cualquier usuario autenticado puede acceder
       if (roles.length === 0) {
         return next();
       }
 
-      // Si hay roles definidos, buscamos el usuario en la BD para verificar el rol
-      const user = await User.findByPk(req.user.id);
-
-      if (!user || !roles.includes(user.role)) {
+      // Verificar si el rol del usuario es válido
+      if (!roles.includes(user.role)) {
         console.error("Acceso denegado. Usuario no tiene los permisos suficientes.");
         return res.status(403).json({ message: "Acceso denegado: No tienes los permisos suficientes" });
       }

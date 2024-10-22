@@ -110,7 +110,6 @@ export const login = async (req, res) => {
 };
 
 // Logout
-// Logout
 export const logout = async (req, res) => {
   res.clearCookie("token-jwt", {
     httpOnly: true,
