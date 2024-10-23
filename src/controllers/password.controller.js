@@ -10,8 +10,8 @@ const transporter = nodemailer.createTransport({
     service: 'Gmail',
 
     auth: {
-        user: EMAIL_USER, 
-        pass: EMAIL_PASS, 
+        user:'soporte.secretariaterritorial@gmail.com', 
+        pass: 'oqtx frff ilon pdnr', 
     },
 });
 
