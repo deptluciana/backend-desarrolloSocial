@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { User } from '../models/user.model.js';
 import { PasswordResetToken } from '../models/passwordResetToken.model.js'
+import { EMAIL_USER, EMAIL_PASS } from './config.js';
 import nodemailer from 'nodemailer'; // Requiere configuración
 import bcrypt from 'bcryptjs';
 
@@ -9,8 +10,8 @@ const transporter = nodemailer.createTransport({
     service: 'Gmail',
 
     auth: {
-        user: process.env.EMAIL_USER, // Configura esto en tu .env
-        pass: process.env.EMAIL_PASS,  // Configura esto en tu .env
+        user: EMAIL_USER, 
+        pass: EMAIL_PASS, 
     },
 });
 
