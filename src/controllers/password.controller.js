@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { User } from '../models/user.model.js';
 import { PasswordResetToken } from '../models/passwordResetToken.model.js'
-import { EMAIL_USER, EMAIL_PASS } from './config.js';
+import { EMAIL_USER, EMAIL_PASS } from '../config.js;
 import nodemailer from 'nodemailer'; // Requiere configuración
 import bcrypt from 'bcryptjs';
 
