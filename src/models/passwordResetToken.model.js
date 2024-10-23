@@ -27,6 +27,7 @@ const PasswordResetToken = sequelize.define('PasswordResetToken', {
 // Relación entre PasswordResetToken y User
 PasswordResetToken.belongsTo(User, {
     foreignKey: 'userId',
+    onDelete: 'CASCADE'
 });
 
 // Sincroniza el modelo con la base de datos

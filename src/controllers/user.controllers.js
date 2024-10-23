@@ -1,4 +1,5 @@
 import { User } from '../models/user.model.js';
+import { PasswordResetToken } from '../models/passwordResetToken.model.js';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { Op } from 'sequelize';
@@ -195,24 +196,25 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
-    
+
     // Verificar si el usuario que se intenta eliminar es el primer administrador
     const firstAdmin = await User.findOne({ where: { role: 'admin' }, order: [['createdAt', 'ASC']] });
     if (user.id === firstAdmin.id) {
       return res.status(403).json({ message: 'No puedes eliminar al primer usuario administrador.' });
     }
 
+    // Eliminar cualquier token de restablecimiento de contraseña asociado al usuario
+    await PasswordResetToken.destroy({ where: { userId: user.id } });
+
     // Invalida el JWT del usuario si es que está autenticado
-    const token = req.cookies.jwt;  // Obtener el token de las cookies
+    const token = req.cookies.jwt;
     if (token) {
       jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
         if (err) {
           return res.status(403).json({ message: 'Token inválido' });
         }
 
-        // Si el token pertenece al usuario eliminado, eliminar el token
         if (decodedToken.id === user.id) {
-          // Aquí puedes eliminar la cookie del frontend también si deseas
           res.clearCookie('jwt'); // Elimina la cookie del token en el cliente
         }
       });
@@ -226,6 +228,7 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
+
 
 // Consultar un usuario específico
 export const getUser = async (req, res) => {
