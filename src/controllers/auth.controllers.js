@@ -30,17 +30,6 @@ export const register = async (req, res) => {
       role: 'user', // Asignar el rol de 'user' por defecto
     });
 
-    // Generar un token de acceso
-    const token = await createAccessToken({ id: newUser.id });
-
-    // Enviar el token en una cookie
-    res.cookie("token-jwt", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    });
-
-
     // Enviar la respuesta con los datos del nuevo usuario
     res.status(201).json({
       id: newUser.id,
