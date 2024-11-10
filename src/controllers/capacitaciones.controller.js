@@ -48,7 +48,7 @@ export const getCapacitacionById = async (req, res) => {
 };
 
 // Actualizar un evento
-export const updateCapacitacion= async (req, res) => {
+export const updateCapacitacion = async (req, res) => {
     const { id } = req.params;
     const { title, ubicacion, horarios, description } = req.body;
 
@@ -65,7 +65,7 @@ export const updateCapacitacion= async (req, res) => {
 
         await capacitacionToUpdate.save(); // Guardar cambios
 
-        return res.status(200).json({ message: 'Capacitacion actualizada correctamente.', evento: eventoToUpdate });
+        return res.status(200).json({ message: 'Capacitacion actualizada correctamente.', evento: capacitacionToUpdate });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Error al actualizar la Capacitacion.' });
