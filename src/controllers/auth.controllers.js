@@ -108,9 +108,7 @@ export const getPendingUsers = async (req, res) => {
 
     // Verificar si hay registros
     if (pendingUsers.length === 0) {
-      return res.status(404).json({
-        message: "No hay solicitudes pendientes.",
-      });
+      return res.status(200).json([]); // Devolver un array vacío
     }
 
     // Enviar la lista de usuarios pendientes
