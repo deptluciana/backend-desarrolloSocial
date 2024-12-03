@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { PendingUser } from '../models/pendingUser.model.js'
 import { User } from '../models/user.model.js';
 import { createAccessToken } from '../libs/jwt.js';
 
@@ -45,6 +46,47 @@ export const register = async (req, res) => {
     console.error("Error en el registro:", error);
     res.status(500).json({
       message: process.env.NODE_ENV === "development" ? error.message : "Error interno del servidor"
+    });
+  }
+};
+
+export const registerPending = async (req, res) => {
+  try {
+    const { username, email, password, first_name, last_name, phone, address } = req.body;
+
+    // Verificar si el usuario ya existe en `users` o en `registro_pendiente`
+    const userFound = await User.findOne({ where: { email } });
+    const pendingUserFound = await PendingUser.findOne({ where: { email } });
+
+    if (userFound || pendingUserFound) {
+      return res.status(400).json({
+        message: "El correo electrónico ya está en uso o pendiente de aprobación",
+      });
+    }
+
+    // Encriptar la contraseña
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // Crear una nueva entrada en la tabla `registro_pendiente`
+    const newPendingUser = await PendingUser.create({
+      username,
+      email,
+      password: passwordHash,
+      first_name,
+      last_name,
+      phone,
+      address,
+    });
+
+    res.status(201).json({
+      message: "Solicitud de registro enviada con éxito. Un administrador revisará tu solicitud.",
+      id: newPendingUser.id,
+      email: newPendingUser.email,
+    });
+  } catch (error) {
+    console.error("Error en el registro pendiente:", error);
+    res.status(500).json({
+      message: "Error interno del servidor",
     });
   }
 };
