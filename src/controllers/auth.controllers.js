@@ -64,14 +64,11 @@ export const registerPending = async (req, res) => {
       });
     }
 
-    // Encriptar la contraseña
-    const passwordHash = await bcrypt.hash(password, 10);
-
     // Crear una nueva entrada en la tabla `registro_pendiente`
     const newPendingUser = await PendingUser.create({
       username,
       email,
-      password: passwordHash,
+      password,
       first_name,
       last_name,
       phone,
@@ -113,6 +110,66 @@ export const getPendingUsers = async (req, res) => {
     res.status(500).json({
       message: "Error interno del servidor",
     });
+  }
+};
+
+export const acceptPendingUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Buscar el usuario pendiente por ID
+    const pendingUser = await PendingUser.findByPk(id);
+    if (!pendingUser) {
+      return res.status(404).json({ message: "Solicitud no encontrada" });
+    }
+
+    // Crear un nuevo usuario en la tabla `users`
+    const passwordHash = await bcrypt.hash(pendingUser.password, 10); // Encriptar la contraseña
+    const newUser = await User.create({
+      username: pendingUser.username,
+      email: pendingUser.email,
+      password: passwordHash,
+      first_name: pendingUser.first_name,
+      last_name: pendingUser.last_name,
+      phone: pendingUser.phone,
+      address: pendingUser.address,
+      role: 'user', // Asignar el rol de 'user' por defecto
+    });
+
+    // Eliminar la solicitud pendiente
+    await pendingUser.destroy();
+
+    res.status(201).json({
+      message: "Usuario aceptado y registrado con éxito",
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+      },
+    });
+  } catch (error) {
+    console.error("Error al aceptar solicitud:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+export const rejectPendingUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Buscar el usuario pendiente por ID
+    const pendingUser = await PendingUser.findByPk(id);
+    if (!pendingUser) {
+      return res.status(404).json({ message: "Solicitud no encontrada" });
+    }
+
+    // Eliminar la solicitud pendiente
+    await pendingUser.destroy();
+
+    res.status(200).json({ message: "Solicitud rechazada y eliminada con éxito" });
+  } catch (error) {
+    console.error("Error al rechazar solicitud:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
