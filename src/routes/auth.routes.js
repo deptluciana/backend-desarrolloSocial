@@ -3,11 +3,13 @@ import { register, login, logout, registerPending } from '../controllers/auth.co
 import { loginSchema, registerSchema } from '../schemas/auth.schemas.js';
 import { validateSchema } from '../middlewares/validator.middleware.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
+import { getPendingUsers } from '../controllers/auth.controllers.js';
 
 const router = Router();
 
 router.post('/register', validateSchema(registerSchema), register);
-router.post('/register-pending', validateSchema(registerSchema), registerPending); // Nueva ruta
+router.post('/register-pending', validateSchema(registerSchema), registerPending); 
+router.get('/solicitudes', authMiddleware(), getPendingUsers);
 router.post('/login', validateSchema(loginSchema), login);
 router.post('/logout', logout);
 

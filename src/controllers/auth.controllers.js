@@ -91,6 +91,32 @@ export const registerPending = async (req, res) => {
   }
 };
 
+// Obtener usuarios pendientes
+export const getPendingUsers = async (req, res) => {
+  try {
+    // Consultar todos los registros en la tabla PendingUser
+    const pendingUsers = await PendingUser.findAll({
+      attributes: ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'address'], // Selecciona solo los campos necesarios
+    });
+
+    // Verificar si hay registros
+    if (pendingUsers.length === 0) {
+      return res.status(404).json({
+        message: "No hay solicitudes pendientes.",
+      });
+    }
+
+    // Enviar la lista de usuarios pendientes
+    res.json(pendingUsers);
+  } catch (error) {
+    console.error("Error al obtener usuarios pendientes:", error);
+    res.status(500).json({
+      message: "Error interno del servidor",
+    });
+  }
+};
+
+
 // Inicio de sesión
 export const login = async (req, res) => {
   const { email, password } = req.body;
