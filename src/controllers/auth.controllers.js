@@ -1,7 +1,17 @@
 import bcrypt from 'bcryptjs';
+import nodemailer from 'nodemailer';
 import { PendingUser } from '../models/pendingUser.model.js'
 import { User } from '../models/user.model.js';
 import { createAccessToken } from '../libs/jwt.js';
+
+// Configuración del transportador de nodemailer
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'soporte.secretariaterritorial@gmail.com',
+    pass: 'oqtx frff ilon pdnr',
+  },
+});
 
 // Registro de usuario
 export const register = async (req, res) => {
@@ -139,6 +149,19 @@ export const acceptPendingUser = async (req, res) => {
     // Eliminar la solicitud pendiente
     await pendingUser.destroy();
 
+    // Enviar correo electrónico de aceptación
+    await transporter.sendMail({
+      to: newUser.email,
+      subject: 'Solicitud Aceptada',
+      html: `
+          <div style="font-family: Arial, sans-serif; color: #333;">
+              <h2>¡Tu solicitud ha sido aceptada!</h2>
+              <p>Hola ${newUser.first_name},</p>
+              <p>Te informamos que tu solicitud ha sido aceptada. Ya puedes acceder a nuestra plataforma con tus credenciales registradas.</p>
+          </div>
+      `,
+    });
+
     res.status(201).json({
       message: "Usuario aceptado y registrado con éxito",
       user: {
@@ -162,6 +185,19 @@ export const rejectPendingUser = async (req, res) => {
     if (!pendingUser) {
       return res.status(404).json({ message: "Solicitud no encontrada" });
     }
+
+    // Enviar correo electrónico de rechazo
+    await transporter.sendMail({
+      to: pendingUser.email,
+      subject: 'Solicitud Rechazada',
+      html: `
+          <div style="font-family: Arial, sans-serif; color: #333;">
+              <h2>Tu solicitud ha sido rechazada</h2>
+              <p>Hola ${pendingUser.first_name},</p>
+              <p>Lamentamos informarte que tu solicitud no ha sido aceptada en este momento.</p>
+          </div>
+      `,
+    });
 
     // Eliminar la solicitud pendiente
     await pendingUser.destroy();
