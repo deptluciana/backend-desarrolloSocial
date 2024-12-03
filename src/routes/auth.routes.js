@@ -14,7 +14,7 @@ router.post('/login', validateSchema(loginSchema), login);
 router.post('/logout', logout);
 
 //usuarios pendientes
-router.get('/solicitudes', authMiddleware(), getPendingUsers);
+router.get('/solicitudes', getPendingUsers);
 router.post('/solicitudes/:id/accept', authMiddleware(), acceptPendingUser);
 router.post('/solicitudes/:id/reject', authMiddleware(), rejectPendingUser);
 
